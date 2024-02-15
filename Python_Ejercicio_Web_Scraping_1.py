@@ -8,6 +8,16 @@ from bs4 import BeautifulSoup
 print ("Primer ejemplo de web scraping")
 
 def get_price_ml(url_producto):
+    """
+    Obtiene el precio de un producto en MercadoLibre a partir de su URL.
+
+    Parameters:
+    url_producto (str): La URL del producto en MercadoLibre.
+
+    Returns:
+    str: El precio del producto o 'No disponible' si no se encuentra.
+
+    """
     # Realizar la solicitud HTTP y obtener el contenido de la página
     response = requests.get(url_producto)
     html_content = response.content
@@ -15,9 +25,10 @@ def get_price_ml(url_producto):
     # Creamos un objeto de BeautifulSoup pasando el html y parceamos el html 
     soup = BeautifulSoup(html_content, 'html.parser')
 
+    # Encontrar el elemento que contiene el precio
     precio_elemento = soup.find('span', class_='andes-money-amount__fraction')
 
-    # Extraermos el texto del elemento de precio
+    # Extraer el texto del elemento de precio
     precio = precio_elemento.text if precio_elemento else 'No disponible'
     # Algunas veces puede que tengan tabuladores o saltos de linea.
     # Para solucionarlo podemos usar el metodo strip() que los quita
